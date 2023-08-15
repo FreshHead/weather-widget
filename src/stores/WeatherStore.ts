@@ -66,7 +66,7 @@ export const useWeatherStore = defineStore("weatherStore", {
 
     async getWeatherByQuery(query: object): Promise<CityWeather> {
       this.loading = true;
-      const baseUrl = `https://api.openweathermap.org/data/2.5/weather?appid=${import.meta.env.VITE_OPEN_WEATHER_MAP_API_KEY}&unit=metric`;
+      const baseUrl = `https://api.openweathermap.org/data/2.5/weather?appid=${import.meta.env.VITE_OPEN_WEATHER_MAP_API_KEY}&units=metric`;
       const queryString = Object.entries(query).reduce(
         (acc, el) => (acc += `&${el[0]}=${el[1]}`),
         ""
