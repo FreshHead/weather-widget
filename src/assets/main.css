@@ -1,0 +1,11 @@
+* {
+  --primary: lightblue;
+}
+.btn {
+  height: 32px;
+  width: 32px;
+  background-color: transparent;
+  background-size: cover;
+  border: none;
+  cursor: pointer;
+}
