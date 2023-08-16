@@ -34,7 +34,7 @@ const showSettings = ref(false);
 
 <style>
 .weather-widget {
-  max-width: 300px;
+  margin: 0 auto;
   position: relative;
 }
 .weather-widget__loading-overlay {
@@ -75,6 +75,12 @@ const showSettings = ref(false);
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
+  filter: brightness(0) invert(1); /* Making same svg white. */
+}
+@media (min-width: 550px) {
+  .weather-widget {
+    max-width: 300px;
+  }
 }
 </style>
 <style src="@/assets/main.css"></style>
