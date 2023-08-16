@@ -23,10 +23,9 @@ const capitalizedDescription = computed(() => {
     <span class="city-card__description">Feels like {{ cityWeather.weather.feelsLike }}℃.
       {{ capitalizedDescription }}</span>
     <div class="city-card__wind-container">
-      <div>
-        {{ cityWeather.weather.windSpeed }}m/s</div>
       <div class="city-card__wind-arrow" 
         :style="{ backgroundImage: `url(${windArrowIconPath})`, transform: `rotate(${cityWeather.weather.windDegree}deg)` }"></div>
+      <div>{{ cityWeather.weather.windSpeed }}m/s</div>
     </div>
     <span>{{ cityWeather.weather.pressure }}hPa</span>
     <span>Humidity: {{ cityWeather.weather.humidity }}%</span>
@@ -71,8 +70,9 @@ const capitalizedDescription = computed(() => {
 }
 
 .city-card__wind-arrow {
-  width: 32px;
-  height: 32px;
+  align-self: center;
+  width: 1.5rem;
+  height: 1.5rem;
   background-size: cover;
 }
 </style>

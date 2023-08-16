@@ -33,7 +33,6 @@ const removeCity = (cityName: string) => {
     <button
       class="btn settings-page__close-btn"
       :style="{ backgroundImage: `url(${closeIconPath})` }"
-      aria-label="Settings"
       @click="onCloseClicked"
     ></button>
     <div

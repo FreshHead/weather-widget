@@ -16,15 +16,7 @@ const dragover = (event: DragEvent) => {
 
 const drop = (event: DragEvent) => {
   let indexOfDragged = Number(event.dataTransfer?.getData("text/plain"));
-  store.cityWeatherList.splice(
-    props.index,
-    0,
-    store.cityWeatherList[indexOfDragged]
-  );
-  if (indexOfDragged > props.index) {
-    indexOfDragged++;
-  }
-  store.cityWeatherList.splice(indexOfDragged, 1);
+  store.swapCities(indexOfDragged, props.index)
   isDragover.value = false;
 };
 </script>

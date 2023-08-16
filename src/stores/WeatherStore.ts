@@ -3,12 +3,14 @@ import type { Coord, CityWeather } from "../types";
 
 type StateShape = {
   loading: boolean;
+  errorMsg: string;
   cityWeatherList: CityWeather[];
 };
 
 export const useWeatherStore = defineStore("weatherStore", {
   state: (): StateShape => ({
     loading: false,
+    errorMsg: "",
     cityWeatherList: [],
   }),
   getters: {},
@@ -51,7 +53,8 @@ export const useWeatherStore = defineStore("weatherStore", {
           existingCityWeather.cityName === cityWeather.cityName
       );
       if (cityAlreadyAded) {
-        throw new Error("City with this name already exists.");
+        this.errorMsg = "City with this name already exists.";
+        return;
       }
       this.cityWeatherList.push(cityWeather);
       this.updateLocalStorage();
@@ -64,6 +67,18 @@ export const useWeatherStore = defineStore("weatherStore", {
       this.updateLocalStorage();
     },
 
+    swapCities(indexOfFirst: number, indexOfSecond: number){
+      this.cityWeatherList.splice(
+        indexOfSecond,
+        0,
+        this.cityWeatherList[indexOfFirst]
+      );
+      if (indexOfFirst > indexOfSecond) {
+        indexOfFirst++;
+      }
+      this.cityWeatherList.splice(indexOfFirst, 1);
+    },
+
     async getWeatherByQuery(query: object): Promise<CityWeather> {
       this.loading = true;
       const baseUrl = `https://api.openweathermap.org/data/2.5/weather?appid=${import.meta.env.VITE_OPEN_WEATHER_MAP_API_KEY}&units=metric`;
@@ -71,32 +86,43 @@ export const useWeatherStore = defineStore("weatherStore", {
         (acc, el) => (acc += `&${el[0]}=${el[1]}`),
         ""
       );
-      const response = await fetch(baseUrl + queryString);
-      const { name, coord, weather, main, visibility, wind } =
-        await response.json();
-      const primaryWeather = weather[0];
-      this.loading = false;
-      return {
-        coord: coord,
-        cityName: name,
-        weather: {
-          iconCode: primaryWeather.icon,
-          description: primaryWeather.description,
-          temperature: main.temp.toFixed(),
-          feelsLike: main.feels_like.toFixed(),
-          humidity: main.humidity,
-          pressure: main.pressure,
-          visibility: visibility / 1000,
-          windSpeed: wind.speed,
-          windDegree: wind.deg
-        },
-      };
+      try {
+        const response = await fetch(baseUrl + queryString);
+        const { name, coord, weather, main, visibility, wind } =
+          await response.json();
+        const primaryWeather = weather[0];
+        this.loading = false;
+        return {
+          coord: coord,
+          cityName: name,
+          weather: {
+            iconCode: primaryWeather.icon,
+            description: primaryWeather.description,
+            temperature: main.temp.toFixed(),
+            feelsLike: main.feels_like.toFixed(),
+            humidity: main.humidity,
+            pressure: main.pressure,
+            visibility: visibility / 1000,
+            windSpeed: wind.speed,
+            windDegree: wind.deg
+          },
+        };
+      } catch (error) {
+        this.loading = false;
+        this.errorMsg = "Error while loading weather data."
+        throw new Error("Error in OpenWeather request")
+      }
     },
 
     updateLocalStorage() {
-      const coordList = this.cityWeatherList.map(
-        (cityWeather) => cityWeather.coord
-      );
+      const unique = (arr: any[], key: string) => {
+        const keys = new Set();
+        return arr.filter(el => !keys.has(el[key]) && keys.add(el[key]));
+      };
+      const coordList = unique(this.cityWeatherList, "cityName")
+      .map((cityWeather) => ({
+        cityName: cityWeather.cityName, ...cityWeather.coord
+      }));
       localStorage.setItem("coordList", JSON.stringify(coordList));
     },
   },
