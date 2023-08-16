@@ -2,7 +2,6 @@
 TypeScript + Vue3 Weather widget that bundles into custom element.
 Live demo: https://main--prismatic-starship-5b64cc.netlify.app/
 
-This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
 
