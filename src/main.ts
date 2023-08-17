@@ -1,8 +1,9 @@
-import { createApp, defineCustomElement } from 'vue'
 import { createPinia } from 'pinia'
+import { createApp, defineCustomElement } from 'vue'
+
+import { innerStylesIntoRootComponent } from '@/utils.js'
 
 import App from './WeatherWidget.ce.vue'
-import { innerStylesIntoRootComponent } from '@/utils.js'
 
 // Feel free to ask in an interview why I chose this workaround.
 innerStylesIntoRootComponent(App)

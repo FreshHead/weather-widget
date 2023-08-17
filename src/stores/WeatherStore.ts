@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-import type { Coord, CityWeather } from '../types'
+
+import type { CityWeather, Coord } from '@/types'
 
 type StateShape = {
   loading: boolean

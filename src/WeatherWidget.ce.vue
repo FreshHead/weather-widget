@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import WeatherPage from '@/views/WeatherPage.ce.vue'
-import SettingsPage from '@/views/SettingsPage.ce.vue'
-import { useWeatherStore } from '@/stores/WeatherStore'
+
 import { ref } from 'vue'
-import loadingGifPath from '@/assets/loading.gif'
+
 import closeIconPath from '@/assets/icons/close.svg'
+import loadingGifPath from '@/assets/loading.gif'
+import { useWeatherStore } from '@/stores/WeatherStore'
+import SettingsPage from '@/views/SettingsPage.ce.vue'
+import WeatherPage from '@/views/WeatherPage.ce.vue'
 
 const store = useWeatherStore()
 store.initCityWeatherList()

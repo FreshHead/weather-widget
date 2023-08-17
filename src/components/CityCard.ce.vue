@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { CityWeather } from '@/types'
 import { computed } from 'vue'
-import windArrowIconPath from '../assets/icons/wind-arrow.svg'
+
+import windArrowIconPath from '@/assets/icons/wind-arrow.svg'
+import type { CityWeather } from '@/types'
 
 type PropTypes = {
   cityWeather: CityWeather

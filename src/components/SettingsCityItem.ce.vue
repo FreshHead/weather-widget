@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import hamburgerMenuIconPath from '../assets/icons/hamburger-menu.svg'
-import trashBinIconPath from '../assets/icons/trash-bin.svg'
+
+import hamburgerMenuIconPath from '@/assets/icons/hamburger-menu.svg'
+import trashBinIconPath from '@/assets/icons/trash-bin.svg'
 
 const props = defineProps<{
   cityName: string

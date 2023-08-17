@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { useWeatherStore } from '@/stores/WeatherStore'
 import { ref } from 'vue'
+
+import { useWeatherStore } from '@/stores/WeatherStore'
 
 const props = defineProps<{
   index: number

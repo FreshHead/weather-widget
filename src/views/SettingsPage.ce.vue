@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useWeatherStore } from '../stores/WeatherStore'
-import closeIconPath from '../assets/icons/close.svg'
-import enterIconPath from '../assets/icons/enter.svg'
-import SettingsCityItem from '../components/SettingsCityItem.ce.vue'
+
+import closeIconPath from '@/assets/icons/close.svg'
+import enterIconPath from '@/assets/icons/enter.svg'
 import DropPlace from '@/components/DropPlace.ce.vue'
+import SettingsCityItem from '@/components/SettingsCityItem.ce.vue'
+import { useWeatherStore } from '@/stores/WeatherStore'
 
 const store = useWeatherStore()
 
@@ -74,7 +75,7 @@ const removeCity = (cityName: string) => {
 #settings-page__input {
   flex: 1;
   font-size: 1.1rem;
-  padding: 0.5rem 0;
+  padding: 0.5rem;
   margin-top: 0.5rem;
 }
 

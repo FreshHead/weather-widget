@@ -1,8 +1,8 @@
-import WeatherPage from '@/views/WeatherPage.ce.vue'
-import SettingsPage from '@/views/SettingsPage.ce.vue'
 import CityCard from '@/components/CityCard.ce.vue'
 import DropPlace from '@/components/DropPlace.ce.vue'
 import SettingsCityItem from '@/components/SettingsCityItem.ce.vue'
+import SettingsPage from '@/views/SettingsPage.ce.vue'
+import WeatherPage from '@/views/WeatherPage.ce.vue'
 
 /*
  * Fix for issue https://github.com/vuejs/core/issues/4662.

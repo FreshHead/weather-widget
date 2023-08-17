@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useWeatherStore } from '../stores/WeatherStore'
-import CityCard from '../components/CityCard.ce.vue'
-import settingsIconPath from '../assets/icons/settings.svg'
+import settingsIconPath from '@/assets/icons/settings.svg'
+import CityCard from '@/components/CityCard.ce.vue'
+import { useWeatherStore } from '@/stores/WeatherStore'
 
 const store = useWeatherStore()
 
