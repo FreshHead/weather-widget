@@ -16,28 +16,28 @@ export const useWeatherStore = defineStore("weatherStore", {
   getters: {},
   actions: {
     async initCityWeatherList() {
-      this.loading = true;
+
       const storageCoordList = localStorage.getItem("coordList");
       if (storageCoordList) {
+        this.loading = true;
         await Promise.allSettled(
           (JSON.parse(storageCoordList) as Coord[]).map(async (coord) =>
             this.cityWeatherList.push(await this.getCityWithWeather(coord))
           )
         );
+        this.loading = false;
       } else if (navigator.geolocation) {
-        await new Promise<void>((resolve) => {
-          navigator.geolocation.getCurrentPosition(async ({ coords }) => {
-            this.cityWeatherList = [
-              await this.getCityWithWeather({
-                lat: coords.latitude,
-                lon: coords.longitude,
-              }),
-            ];
-            resolve();
-          });
+        navigator.geolocation.getCurrentPosition(async ({ coords }) => {
+          this.loading = true;
+          this.cityWeatherList = [
+            await this.getCityWithWeather({
+              lat: coords.latitude,
+              lon: coords.longitude,
+            }),
+          ];
+          this.loading = false;
         });
       }
-      this.loading = false;
     },
 
     async getCityWithWeather(coord: Coord): Promise<CityWeather> {
@@ -67,7 +67,7 @@ export const useWeatherStore = defineStore("weatherStore", {
       this.updateLocalStorage();
     },
 
-    swapCities(indexOfFirst: number, indexOfSecond: number){
+    swapCities(indexOfFirst: number, indexOfSecond: number) {
       this.cityWeatherList.splice(
         indexOfSecond,
         0,
@@ -120,9 +120,9 @@ export const useWeatherStore = defineStore("weatherStore", {
         return arr.filter(el => !keys.has(el[key]) && keys.add(el[key]));
       };
       const coordList = unique(this.cityWeatherList, "cityName")
-      .map((cityWeather) => ({
-        cityName: cityWeather.cityName, ...cityWeather.coord
-      }));
+        .map((cityWeather) => ({
+          cityName: cityWeather.cityName, ...cityWeather.coord
+        }));
       localStorage.setItem("coordList", JSON.stringify(coordList));
     },
   },
