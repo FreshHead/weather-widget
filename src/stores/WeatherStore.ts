@@ -1,97 +1,92 @@
-import { defineStore } from "pinia";
-import type { Coord, CityWeather } from "../types";
+import { defineStore } from 'pinia'
+import type { Coord, CityWeather } from '../types'
 
 type StateShape = {
-  loading: boolean;
-  errorMsg: string;
-  cityWeatherList: CityWeather[];
-};
+  loading: boolean
+  errorMsg: string
+  cityWeatherList: CityWeather[]
+}
 
-export const useWeatherStore = defineStore("weatherStore", {
+export const useWeatherStore = defineStore('weatherStore', {
   state: (): StateShape => ({
     loading: false,
-    errorMsg: "",
-    cityWeatherList: [],
+    errorMsg: '',
+    cityWeatherList: []
   }),
   getters: {},
   actions: {
     async initCityWeatherList() {
-
-      const storageCoordList = localStorage.getItem("coordList");
+      const storageCoordList = localStorage.getItem('coordList')
       if (storageCoordList) {
-        this.loading = true;
+        this.loading = true
         await Promise.allSettled(
           (JSON.parse(storageCoordList) as Coord[]).map(async (coord) =>
             this.cityWeatherList.push(await this.getCityWithWeather(coord))
           )
-        );
-        this.loading = false;
+        )
+        this.loading = false
       } else if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async ({ coords }) => {
-          this.loading = true;
+          this.loading = true
           this.cityWeatherList = [
             await this.getCityWithWeather({
               lat: coords.latitude,
-              lon: coords.longitude,
-            }),
-          ];
-          this.loading = false;
-        });
+              lon: coords.longitude
+            })
+          ]
+          this.loading = false
+        })
       }
     },
 
     async getCityWithWeather(coord: Coord): Promise<CityWeather> {
-      return this.getWeatherByQuery(coord);
+      return this.getWeatherByQuery(coord)
     },
 
     async addCity(cityName: string) {
       // Do request before checking for same name, because OpenWeather can give different name.
       // For example: Kazan -> Kazan'.
-      const cityWeather = await this.getWeatherByQuery({ q: cityName });
+      const cityWeather = await this.getWeatherByQuery({ q: cityName })
       const cityAlreadyAded = this.cityWeatherList.find(
-        (existingCityWeather) =>
-          existingCityWeather.cityName === cityWeather.cityName
-      );
+        (existingCityWeather) => existingCityWeather.cityName === cityWeather.cityName
+      )
       if (cityAlreadyAded) {
-        this.errorMsg = "City with this name already exists.";
-        return;
+        this.errorMsg = 'City with this name already exists.'
+        return
       }
-      this.cityWeatherList.push(cityWeather);
-      this.updateLocalStorage();
+      this.cityWeatherList.push(cityWeather)
+      this.updateLocalStorage()
     },
 
     removeCity(cityName: string) {
       this.cityWeatherList = this.cityWeatherList.filter(
         (cityWeather) => cityWeather.cityName !== cityName
-      );
-      this.updateLocalStorage();
+      )
+      this.updateLocalStorage()
     },
 
     swapCities(indexOfFirst: number, indexOfSecond: number) {
-      this.cityWeatherList.splice(
-        indexOfSecond,
-        0,
-        this.cityWeatherList[indexOfFirst]
-      );
+      this.cityWeatherList.splice(indexOfSecond, 0, this.cityWeatherList[indexOfFirst])
       if (indexOfFirst > indexOfSecond) {
-        indexOfFirst++;
+        indexOfFirst++
       }
-      this.cityWeatherList.splice(indexOfFirst, 1);
+      this.cityWeatherList.splice(indexOfFirst, 1)
     },
 
     async getWeatherByQuery(query: object): Promise<CityWeather> {
-      this.loading = true;
-      const baseUrl = `https://api.openweathermap.org/data/2.5/weather?appid=${import.meta.env.VITE_OPEN_WEATHER_MAP_API_KEY}&units=metric`;
+      this.loading = true
+      const baseUrl = `https://api.openweathermap.org/data/2.5/weather?appid=${
+        import.meta.env.VITE_OPEN_WEATHER_MAP_API_KEY
+      }&units=metric`
       const queryString = Object.entries(query).reduce(
         (acc, el) => (acc += `&${el[0]}=${el[1]}`),
-        ""
-      );
+        ''
+      )
       try {
-        const response = await fetch(baseUrl + queryString);
-        const { name, coord, weather, main, visibility, wind } =
-          await response.json();
-        const primaryWeather = weather[0];
-        this.loading = false;
+        const response = await fetch(baseUrl + queryString)
+        const { name, coord, weather, main, visibility, wind } = await response.json()
+        const primaryWeather = weather[0]
+        this.loading = false
         return {
           coord: coord,
           cityName: name,
@@ -105,25 +100,25 @@ export const useWeatherStore = defineStore("weatherStore", {
             visibility: visibility / 1000,
             windSpeed: wind.speed,
             windDegree: wind.deg
-          },
-        };
+          }
+        }
       } catch (error) {
-        this.loading = false;
-        this.errorMsg = "Error while loading weather data."
-        throw new Error("Error in OpenWeather request")
+        this.loading = false
+        this.errorMsg = 'Error while loading weather data.'
+        throw new Error('Error in OpenWeather request')
       }
     },
 
     updateLocalStorage() {
       const unique = (arr: any[], key: string) => {
-        const keys = new Set();
-        return arr.filter(el => !keys.has(el[key]) && keys.add(el[key]));
-      };
-      const coordList = unique(this.cityWeatherList, "cityName")
-        .map((cityWeather) => ({
-          cityName: cityWeather.cityName, ...cityWeather.coord
-        }));
-      localStorage.setItem("coordList", JSON.stringify(coordList));
-    },
-  },
-});
+        const keys = new Set()
+        return arr.filter((el) => !keys.has(el[key]) && keys.add(el[key]))
+      }
+      const coordList = unique(this.cityWeatherList, 'cityName').map((cityWeather) => ({
+        cityName: cityWeather.cityName,
+        ...cityWeather.coord
+      }))
+      localStorage.setItem('coordList', JSON.stringify(coordList))
+    }
+  }
+})

@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { useWeatherStore } from "@/stores/WeatherStore";
-import { ref } from "vue";
+import { useWeatherStore } from '@/stores/WeatherStore'
+import { ref } from 'vue'
 
 const props = defineProps<{
-  index: number;
-}>();
-const isDragover = ref(false);
+  index: number
+}>()
+const isDragover = ref(false)
 
-const store = useWeatherStore();
+const store = useWeatherStore()
 
 const dragover = (event: DragEvent) => {
-  isDragover.value = true;
-  event.preventDefault();
-};
+  isDragover.value = true
+  event.preventDefault()
+}
 
 const drop = (event: DragEvent) => {
-  let indexOfDragged = Number(event.dataTransfer?.getData("text/plain"));
+  const indexOfDragged = Number(event.dataTransfer?.getData('text/plain'))
   store.swapCities(indexOfDragged, props.index)
-  isDragover.value = false;
-};
+  isDragover.value = false
+}
 </script>
 
 <template>

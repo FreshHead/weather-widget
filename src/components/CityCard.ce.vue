@@ -1,30 +1,39 @@
 <script setup lang="ts">
-import type { CityWeather } from "@/types";
-import { computed } from "vue";
-import windArrowIconPath from "../assets/icons/wind-arrow.svg";
+import type { CityWeather } from '@/types'
+import { computed } from 'vue'
+import windArrowIconPath from '../assets/icons/wind-arrow.svg'
 
 type PropTypes = {
-  cityWeather: CityWeather;
-};
-const props = defineProps<PropTypes>();
+  cityWeather: CityWeather
+}
+const props = defineProps<PropTypes>()
 
 const capitalizedDescription = computed(() => {
   return (
     props.cityWeather.weather.description[0].toUpperCase() +
     props.cityWeather.weather.description.slice(1)
-  );
-});
+  )
+})
 </script>
 <template>
   <div class="city-card">
     <span class="city-card__cityName">{{ cityWeather.cityName }}</span>
-    <img class="city-card__icon" :src="`https://openweathermap.org/img/wn/${cityWeather.weather.iconCode}@2x.png`" />
+    <img
+      class="city-card__icon"
+      :src="`https://openweathermap.org/img/wn/${cityWeather.weather.iconCode}@2x.png`"
+    />
     <span class="city-card__temperature">{{ cityWeather.weather.temperature }}℃</span>
-    <span class="city-card__description">Feels like {{ cityWeather.weather.feelsLike }}℃.
-      {{ capitalizedDescription }}</span>
+    <span class="city-card__description"
+      >Feels like {{ cityWeather.weather.feelsLike }}℃. {{ capitalizedDescription }}</span
+    >
     <div class="city-card__wind-container">
-      <div class="city-card__wind-arrow" 
-        :style="{ backgroundImage: `url(${windArrowIconPath})`, transform: `rotate(${cityWeather.weather.windDegree}deg)` }"></div>
+      <div
+        class="city-card__wind-arrow"
+        :style="{
+          backgroundImage: `url(${windArrowIconPath})`,
+          transform: `rotate(${cityWeather.weather.windDegree}deg)`
+        }"
+      ></div>
       <div>{{ cityWeather.weather.windSpeed }}m/s</div>
     </div>
     <span>{{ cityWeather.weather.pressure }}hPa</span>

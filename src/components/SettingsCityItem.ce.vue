@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import hamburgerMenuIconPath from "../assets/icons/hamburger-menu.svg";
-import trashBinIconPath from "../assets/icons/trash-bin.svg";
+import { ref } from 'vue'
+import hamburgerMenuIconPath from '../assets/icons/hamburger-menu.svg'
+import trashBinIconPath from '../assets/icons/trash-bin.svg'
 
 const props = defineProps<{
-  cityName: string;
-  index: number;
-}>();
+  cityName: string
+  index: number
+}>()
 
 const emit = defineEmits<{
-  (e: "remove-city", cityName: string): void;
-}>();
+  (e: 'remove-city', cityName: string): void
+}>()
 
-const hamburgerClicked = ref(false);
+const hamburgerClicked = ref(false)
 
 const removeCity = () => {
-  emit("remove-city", props.cityName);
-};
+  emit('remove-city', props.cityName)
+}
 
 const itemDragStart = (event: DragEvent) => {
   if (!hamburgerClicked.value) {
-    event.preventDefault();
+    event.preventDefault()
   } else {
-    event.dataTransfer?.setData("text/plain", String(props.index));
+    event.dataTransfer?.setData('text/plain', String(props.index))
   }
-};
+}
 </script>
 <template>
   <div

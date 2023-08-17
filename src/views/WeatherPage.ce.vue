@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { useWeatherStore } from "../stores/WeatherStore";
-import CityCard from "../components/CityCard.ce.vue";
-import settingsIconPath from "../assets/icons/settings.svg";
+import { useWeatherStore } from '../stores/WeatherStore'
+import CityCard from '../components/CityCard.ce.vue'
+import settingsIconPath from '../assets/icons/settings.svg'
 
-const store = useWeatherStore();
+const store = useWeatherStore()
 
 const emit = defineEmits<{
-  (e: "settings-clicked"): void;
-}>();
+  (e: 'settings-clicked'): void
+}>()
 
 const onSettingsClicked = () => {
-  emit("settings-clicked");
-};
+  emit('settings-clicked')
+}
 </script>
 <template>
   <div class="weather-widget">
@@ -21,10 +21,7 @@ const onSettingsClicked = () => {
       aria-label="Settings"
       @click="onSettingsClicked"
     ></button>
-    <div
-      class="weather-page__no-data"
-      v-if="!store.cityWeatherList.length && !store.loading"
-    >
+    <div class="weather-page__no-data" v-if="!store.cityWeatherList.length && !store.loading">
       Please click gear button and choose a city...
     </div>
     <CityCard

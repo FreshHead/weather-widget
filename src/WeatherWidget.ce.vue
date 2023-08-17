@@ -1,34 +1,35 @@
 <script setup lang="ts">
-import WeatherPage from "@/views/WeatherPage.ce.vue";
-import SettingsPage from "@/views/SettingsPage.ce.vue";
-import { useWeatherStore } from "@/stores/WeatherStore";
-import { ref } from "vue";
-import loadingGifPath from "@/assets/loading.gif";
-import closeIconPath from "@/assets/icons/close.svg";
+import WeatherPage from '@/views/WeatherPage.ce.vue'
+import SettingsPage from '@/views/SettingsPage.ce.vue'
+import { useWeatherStore } from '@/stores/WeatherStore'
+import { ref } from 'vue'
+import loadingGifPath from '@/assets/loading.gif'
+import closeIconPath from '@/assets/icons/close.svg'
 
-const store = useWeatherStore();
-store.initCityWeatherList();
+const store = useWeatherStore()
+store.initCityWeatherList()
 
 const onCloseErrorClicked = () => {
-  store.errorMsg = ""
+  store.errorMsg = ''
 }
 
-const showSettings = ref(false);
+const showSettings = ref(false)
 </script>
 <template>
   <div class="weather-widget">
     <WeatherPage v-if="!showSettings" @settings-clicked="showSettings = true" />
-    <SettingsPage v-else @close-settings-clicked="showSettings = false"/>
+    <SettingsPage v-else @close-settings-clicked="showSettings = false" />
     <div v-if="store.loading" class="weather-widget__loading-overlay">
       <img :src="loadingGifPath" />
     </div>
     <div v-if="store.errorMsg" class="weather-widget__error-msg">
       <button
-      class="btn weather-widget__close-error-btn"
-      :style="{ backgroundImage: `url(${closeIconPath})` }"
-      @click="onCloseErrorClicked"
-    ></button>
-    <span>{{ store.errorMsg }}</span></div>
+        class="btn weather-widget__close-error-btn"
+        :style="{ backgroundImage: `url(${closeIconPath})` }"
+        @click="onCloseErrorClicked"
+      ></button>
+      <span>{{ store.errorMsg }}</span>
+    </div>
   </div>
 </template>
 
