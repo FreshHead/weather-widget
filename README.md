@@ -1,6 +1,6 @@
 # weather-widget
 TypeScript + Vue3 weather widget that bundles into custom element. You can try 
-a [live demo](https://main--prismatic-starship-5b64cc.netlify.app/).
+[live demo](https://main--prismatic-starship-5b64cc.netlify.app/).
 
 
 ## Recommended IDE Setup
